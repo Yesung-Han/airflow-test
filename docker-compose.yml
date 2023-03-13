@@ -88,7 +88,7 @@ services:
       - MYSQL_PASSWORD=airflow
     ports:
       - 3306:3306
-    command: [mysqld, --character-set-server=utf8mb4, --collation-server=utf8mb4_unicode_ci, --query-cache-size=0, --query-cache-type=0, --explicit_defaults_for_timestamp=0]
+    command: [mysqld, --character-set-server=utf8mb4, --collation-server=utf8mb4_unicode_ci, --query-cache-size=0, --query-cache-type=0, --explicit_defaults_for_timestamp=1]
     healthcheck:
       test: "mysqladmin -uroot -ppassword ping"
       interval: 3s
@@ -237,6 +237,7 @@ services:
         mkdir -p /sources/logs /sources/dags /sources/plugins
         chown -R "${AIRFLOW_UID}:0" /sources/{logs,dags,plugins}
         exec /entrypoint airflow version
+        airflow db init
     # yamllint enable rule:line-length
     environment:
       <<: *airflow-common-env
